@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-xs-6" style="margin-top: 30px;">
+                            <div class="col-md-6" style="margin-top: 30px;">
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead>
@@ -108,7 +108,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-xs-6" style="margin-top: 30px;">
+                            <div class="col-md-6" style="margin-top: 30px;">
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <thead>

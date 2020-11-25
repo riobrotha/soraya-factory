@@ -44,12 +44,141 @@
  <link href="<?= base_url('assets'); ?>/css/select2-bootstrap4.css" rel="stylesheet" />
 
  <style>
-     .select2{
+     .select2 {
          width: 100% !important;
      }
 
-     .bg-custom{
+     .bg-custom {
          background-color: #f9f7f7;
-         
+
+     }
+
+     .large-font p {
+         font-size: 14px;
+     }
+
+     .content-block {
+         background-color: #fff;
+         width: 500px;
+         margin: auto;
+
+         border-radius: 3px;
+     }
+
+     .loader-wrapper {
+         height: 300px;
+         padding: 12px;
+     }
+
+     .loader-animation {
+         background: #f5f6f7;
+         height: 104px;
+         overflow: hidden;
+         position: relative;
+     }
+
+     .loader-animation>div {
+         background: #fff;
+         height: 6px;
+         left: 0;
+         position: absolute;
+         right: 0;
+     }
+
+     .loader-animation::before {
+         background-color: #f5f6f7;
+         background-image: url(https://i.postimg.cc/VLC3WF9t/3pk-Fb-IT7-rn.gif);
+         background-repeat: repeat-y;
+         background-size: 100% 1px;
+         content: ' ';
+         display: block;
+         height: 100%;
+     }
+
+
+     /*
+  Below we position the mask divs
+*/
+
+     .block-a.block-a
+
+     /* 
+Have no idea why this written like this, without it the ui breaks works, can anyone explain this ?
+*/
+         {
+         background-color: transparent;
+         border: 8px solid #fff;
+         border-radius: 70%;
+         height: 60px;
+         left: -10px;
+         top: -10px;
+         width: 60px;
+     }
+
+
+     div.block-b {
+         height: 40px;
+         left: 40px;
+         right: auto;
+         top: 0;
+         width: 8px;
+     }
+
+     div.block-c {
+         height: 8px;
+         left: 48px;
+         top: 0;
+     }
+
+     div.block-d {
+         left: 136px;
+         top: 8px;
+     }
+
+     div.block-e {
+         height: 12px;
+         left: 48px;
+         top: 14px;
+     }
+
+     div.block-f {
+         left: 100px;
+         top: 26px;
+     }
+
+     div.block-g {
+         height: 10px;
+         left: 48px;
+         top: 32px;
+     }
+
+     div.block-h {
+         height: 20px;
+         top: 40px;
+     }
+
+     div.block-i {
+         left: 410px;
+         top: 60px
+     }
+
+     div.block-j {
+         height: 13px;
+         top: 66px
+     }
+
+     div.block-k {
+         left: 440px;
+         top: 79px
+     }
+
+     div.block-l {
+         height: 13px;
+         top: 85px
+     }
+
+     div.block-m {
+         left: 178px;
+         top: 98px
      }
  </style>

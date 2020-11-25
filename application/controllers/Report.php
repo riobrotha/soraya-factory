@@ -42,6 +42,21 @@ class Report extends MY_Controller
         //print_r($data['mitra']);
     }
 
+    public function requestDataMitra()
+    {
+        $id_mitra = $this->input->post('id_mitra', true);
+
+        if($id_mitra){
+            $this->report->table = 'mitra';
+            $data['getMitra'] = $this->report->where('id', $id_mitra)->first();
+
+        }
+
+        if($data['getMitra']){
+            $this->load->view('pages/report/list_data_mitra', $data);
+        }
+    }
+
     public function requestMitraReport()
     {
         //if ($this->input->is_ajax_request()) {
@@ -100,13 +115,9 @@ class Report extends MY_Controller
 
     public function requestMitraChart()
     {
-        //if ($this->input->is_ajax_request()) {
+        
         $id_mitra = $this->input->post('id_mitra', true);
-        // $fromDate = $this->input->post('fromDate', true);
-        // $toDate   = $this->input->post('toDate', true);
-
-        // $fromDate2 = strtotime($fromDate);
-        // $toDate2   = strtotime($toDate);
+        
 
         if ($id_mitra) {
             $this->report->table = 'distribusi';
@@ -141,31 +152,7 @@ class Report extends MY_Controller
 
             echo json_encode($data);
 
-            // $data['countSelesai'] = $this->report->select([
-            //     'progress.id', 'store.created_at AS tanggal_store', 'mitrawork.nama_mitrawork', 'distribusi.jumlah_set',
-            //     'store.jumlah_store', 'distribusi.status_pekerjaan'
-            // ])
-            //     ->join('progress')
-            //     ->join('mitrawork')
-            //     ->xjoin('store')
-            //     ->where('store.created_at >=', date("Y-m-d", $fromDate2))
-            //     ->where('store.created_at <=', date("Y-m-d", $toDate2))
-            //     ->where('distribusi.id_mitra', $id_mitra)
-            //     ->where('distribusi.status_pekerjaan', 'selesai')
-            //     ->count();
-
-            // $data['countProses'] = $this->report->select([
-            //     'progress.id', 'store.created_at AS tanggal_store', 'mitrawork.nama_mitrawork', 'distribusi.jumlah_set',
-            //     'store.jumlah_store', 'distribusi.status_pekerjaan'
-            // ])
-            //     ->join('progress')
-            //     ->join('mitrawork')
-            //     ->xjoin('store')
-            //     ->where('store.created_at >=', date("Y-m-d", $fromDate2))
-            //     ->where('store.created_at <=', date("Y-m-d", $toDate2))
-            //     ->where('distribusi.id_mitra', $id_mitra)
-            //     ->where('distribusi.status_pekerjaan', 'proses')
-            //     ->count();
+           
         }
 
 

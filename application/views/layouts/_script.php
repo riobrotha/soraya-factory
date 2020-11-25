@@ -76,6 +76,15 @@
 <?php  ?>
 <script>
     $(document).ready(function() {
+        $('.myTable').DataTable({
+            "order": [
+                [2, "desc"]
+            ], //or asc 
+            "columnDefs": [{
+                "targets": 2,
+                "type": "date-eu"
+            }],
+        });
 
         function getChartJs(type, nilai) {
             var config = null;
@@ -112,14 +121,53 @@
                 config = {
                     type: 'bar',
                     data: {
-                        labels: ["Nov"],
+                        labels: [
+                            "Jan",
+                            "Feb",
+                            "Mar",
+                            "Apr",
+                            "Mei",
+                            "Jun",
+                            "Jul",
+                            "Aug",
+                            "Sep",
+                            "Okt",
+                            "Nov",
+                            "Dec"
+                        ],
                         datasets: [{
                             label: "Selesai",
-                            data: [nilai.selesai11[0].jumlah],
+                            data: [
+                                nilai.selesai1[0].jumlah,
+                                nilai.selesai2[0].jumlah,
+                                nilai.selesai3[0].jumlah,
+                                nilai.selesai4[0].jumlah,
+                                nilai.selesai5[0].jumlah,
+                                nilai.selesai6[0].jumlah,
+                                nilai.selesai7[0].jumlah,
+                                nilai.selesai8[0].jumlah,
+                                nilai.selesai9[0].jumlah,
+                                nilai.selesai10[0].jumlah,
+                                nilai.selesai11[0].jumlah,
+                                nilai.selesai12[0].jumlah
+                            ],
                             backgroundColor: 'rgba(0, 188, 212, 0.8)'
                         }, {
                             label: "Proses",
-                            data: [nilai.proses11[0].jumlah],
+                            data: [
+                                nilai.proses1[0].jumlah,
+                                nilai.proses2[0].jumlah,
+                                nilai.proses3[0].jumlah,
+                                nilai.proses4[0].jumlah,
+                                nilai.proses5[0].jumlah,
+                                nilai.proses6[0].jumlah,
+                                nilai.proses7[0].jumlah,
+                                nilai.proses8[0].jumlah,
+                                nilai.proses9[0].jumlah,
+                                nilai.proses10[0].jumlah,
+                                nilai.proses11[0].jumlah,
+                                nilai.proses12[0].jumlah
+                            ],
                             backgroundColor: 'rgba(233, 30, 99, 0.8)'
                         }]
                     },
@@ -344,8 +392,6 @@
         });
 
         $(document).on('submit', '#form_report_mitra', function(e) {
-            // var fromDate = $('#from_date').val();
-            // var toDate = $('#to_date').val();
             var id_mitra = $('#id_mitra').val();
             $.ajax({
                 method: "POST",
@@ -359,13 +405,32 @@
                     var data = JSON.parse(response);
                     var i;
 
-                   console.log(data);
-
+                    console.log(data.selesai10);
+                    //data.selesai11.length
                     //  if (data.bln11[0])
                     $('.chartjs-hidden-iframe').remove();
                     $('#bar_chart').remove();
-                    $('#chart_place').html('<canvas id="bar_chart"></canvas>');    
+                    $('#chart_place').html('<canvas id="bar_chart"></canvas>');
                     new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar', data));
+                }
+            });
+        });
+
+        $(document).on('submit', '#form_report_mitra', function(e) {
+            var id_mitra = $('#id_mitra').val();
+            $.ajax({
+                method: "POST",
+                url: "<?php echo base_url("report/requestDataMitra") ?>",
+                data: {
+                    id_mitra: id_mitra,
+
+                },
+                beforeSend: function() {
+                    $('#loadIcon').show();
+                },
+                success: function(response) {
+                    $('.result-data-mitra').html(response);
+                    $('#loadIcon').hide();
                 }
             });
         });

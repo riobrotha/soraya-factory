@@ -12,7 +12,8 @@
                 <th>Jenis Kelamin</th>
                 <th>Tempat</th>
                 <th>Status</th>
-               
+                <th>Action</th>
+
             </tr>
         </thead>
         <tbody>
@@ -22,32 +23,33 @@
                     <td><?= $row->nama; ?></td>
                     <td><?= $row->tgl_lahir; ?></td>
                     <td><?= $row->tgl_mulai_kerja; ?></td>
-                    <?php 
-                        $waktuAwal = new DateTime($row->tgl_mulai_kerja . " 00:00:00");
-                        $waktuSekarang = new DateTime();
-                        $diff = date_diff($waktuAwal, $waktuSekarang);
-                        
-                        if($diff->m == 0){
-                            $durasi = 'Kurang dari sebulan';
-                        } else {
-                            $durasi = $diff->m . ' bulan';
-                        }
+                    <?php
+                    $waktuAwal = new DateTime($row->tgl_mulai_kerja . " 00:00:00");
+                    $waktuSekarang = new DateTime();
+                    $diff = date_diff($waktuAwal, $waktuSekarang);
+
+                    if ($diff->m == 0) {
+                        $durasi = 'Kurang dari sebulan';
+                    } else {
+                        $durasi = $diff->m . ' bulan';
+                    }
                     ?>
-                    
+
                     <td><?= $durasi; ?></td>
                     <td><?= $row->nohp; ?></td>
                     <td><?= $row->alamat; ?></td>
                     <td><?= ucfirst($row->jenis_kelamin); ?></td>
                     <td><?= ucfirst($row->tempat); ?></td>
                     <td><?php
-                        if($row->status_nikah == "belum_nikah"){
+                        if ($row->status_nikah == "belum_nikah") {
                             echo 'Belum Nikah';
                         } else {
                             echo 'Nikah';
                         }
-                    
-                    ?></td>
-                   
+
+                        ?></td>
+                    <td><a href="<?= base_url("mitra/moveMitra/$row->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Keluarkan</a></td>
+
                 </tr>
             <?php endforeach ?>
         </tbody>

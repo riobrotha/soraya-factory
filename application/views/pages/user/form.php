@@ -121,7 +121,7 @@
                             </div>
 
                             <div class="col-sm-12" style="margin-top: 20px;">
-                                <input type="text" name="image" value="<?= $input->image ?>" id="image_admin">
+                                <input type="hidden" name="image" value="<?= $input->image ?>" id="image_admin">
                                 <h2 class="card-inside-title">Upload Profile Picture</h2>
                                 <div id="my-dropzone" class="dropzone">
 

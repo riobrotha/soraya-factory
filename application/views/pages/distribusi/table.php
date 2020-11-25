@@ -1,5 +1,5 @@
 <div class="table-responsive">
-    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+    <table class="table table-bordered table-striped table-hover myTable dataTable">
         <thead>
             <tr>
                 <th>No DO</th>

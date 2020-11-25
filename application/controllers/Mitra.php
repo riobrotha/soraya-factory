@@ -69,6 +69,45 @@ class Mitra extends MY_Controller
         //echo var_dump($input);
 
     }
+
+    public function moveMitra($id_mitra)
+    {
+
+        $mitra = $this->mitra->where('id', $id_mitra)->get();
+
+        $data = array();
+
+        foreach ($mitra as $row) {
+            array_push($data, array(
+                'id'              => $row->id,
+                'nama'            => $row->nama,
+                'tgl_lahir'       => $row->tgl_lahir,
+                'tgl_mulai_kerja' => $row->tgl_mulai_kerja,
+                'nohp'            => $row->nohp,
+                'alamat'          => $row->alamat,
+                'jenis_kelamin'   => $row->jenis_kelamin,
+                'tempat'          => $row->tempat,
+                'status_nikah'    => $row->status_nikah
+            ));
+
+            
+        }
+
+        if (count($data) > 0) {
+            // $this->mitra->table = 'mitra_out';
+            if ($this->db->insert_batch('mitra_out', $data)) {
+                $this->mitra->where('id', $id_mitra)->delete();
+                $this->session->set_flashdata('success', 'Mitra telah dikeluarkan!');
+                redirect(base_url("mitra"));
+            } else {
+                $this->session->set_flashdata('error', 'Oops! Something went wrong!');
+                redirect(base_url("mitra"));
+            }
+        } else {
+            $this->session->set_flashdata('warning', 'Tidak ada data');
+            redirect(base_url("mitra"));
+        }
+    }
 }
 
 /* End of file Mitra.php */

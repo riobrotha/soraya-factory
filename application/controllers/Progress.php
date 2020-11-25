@@ -24,13 +24,13 @@ class Progress extends MY_Controller
     public function index()
     {
 
-        $data['content'] = $this->progress->where('MONTH(tanggal)', date("m"))->get();
+        $data['content'] = $this->progress->where('MONTH(tanggal)', date("m"))->orderBy('tanggal', 'DESC')->get();
         $data['page'] = 'pages/progress/index';
         $data['title'] = 'Daftar Progress';
         $data['nav_title'] = 'progress';
         $data['title_detail'] = 'Daftar Progress';
         //$this->show_table($data);
-
+        //print_r($data['content']);
         $this->view($data);
     }
 
