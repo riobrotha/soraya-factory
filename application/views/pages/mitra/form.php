@@ -68,15 +68,19 @@
                             <div class="col-sm-6">
                                 <div class="form-group form-float">
                                     <div class="form-line tgl_lahir" id="bs_datepicker_container">
+                                        <?php
+                                        $conv_tgl_lahir = date_format(new DateTime($input->tgl_lahir . "00:00:00"), "m/d/Y");
+                                        $conv_tgl_mulai_kerja = date_format(new DateTime($input->tgl_mulai_kerja . "00:00:00"), "m/d/Y");
+                                        ?>
                                         <?=
-                                            form_input('', '', [
+                                            form_input('', $conv_tgl_lahir, [
                                                 'class' => 'form-control valTglLahir',
                                                 'id' => 'tgllahir',
                                                 'autocomplete' => 'off'
                                             ]);
 
                                         ?>
-                                        
+
                                         <label class="form-label">Tanggal Lahir</label>
                                         <?= form_error('tgl_lahir'); ?>
 
@@ -89,7 +93,7 @@
                                 <div class="form-group form-float">
                                     <div class="form-line tgl_kerja" id="bs_datepicker_container">
                                         <?=
-                                            form_input('','', [
+                                            form_input('', $conv_tgl_mulai_kerja, [
                                                 'class' => 'form-control valTglKerja',
                                                 'id' => 'tglkerja',
                                                 'autocomplete' => 'off'
@@ -126,8 +130,8 @@
                                 <h2 class="card-inside-title">Tempat Kerja Mitra</h2>
                                 <select class="form-control show-tick" name="tempat">
                                     <option>-- Pilih Tempat--</option>
-                                    <option value="pabrik">Pabrik</option>
-                                    <option value="rumah">Rumah</option>
+                                    <option value="pabrik" <?= $input->tempat == 'pabrik' ? 'selected' : '' ?>>Pabrik</option>
+                                    <option value="rumah" <?= $input->tempat == 'rumah' ? 'selected' : '' ?>>Rumah</option>
 
                                 </select>
                             </div>
@@ -136,10 +140,10 @@
                                 <h2 class="card-inside-title">Status</h2>
                                 <select class="form-control show-tick" name="status_nikah" searchable="Search here..">
                                     <option>-- Pilih Status--</option>
-                                    <option value="belum_nikah">Belum Menikah</option>
-                                    <option value="nikah">Nikah</option>
-                                    <option value="janda">Janda</option>
-                                    <option value="duda">Duda</option>
+                                    <option value="belum_nikah" <?= $input->status_nikah == 'belum_nikah' ? 'selected' : '' ?>>Belum Menikah</option>
+                                    <option value="nikah" <?= $input->status_nikah == 'nikah' ? 'selected' : '' ?>>Nikah</option>
+                                    <option value="janda" <?= $input->status_nikah == 'janda' ? 'selected' : '' ?>>Janda</option>
+                                    <option value="duda" <?= $input->status_nikah == 'duda' ? 'selected' : '' ?>>Duda</option>
                                 </select>
                             </div>
                             <div class="col-sm-12">

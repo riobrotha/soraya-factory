@@ -137,6 +137,64 @@ class Progress extends MY_Controller
         }
     }
 
+    public function edit_plan($id_progress)
+    {
+        $this->progress->table = 'perencanaan';
+        $data['getPerencanaan'] = $this->progress->select([
+            'perencanaan.id AS id_perencanaan', 'perencanaan.id_progress', 'perencanaan.id_jenis_pekerjaan', 'perencanaan.id_jenis_bantal',
+            'perencanaan.qty', 'perencanaan.nama_admin',
+            'jenis_pekerjaan.nama_pekerjaan', 'jenis_bantal.nama_jenis_bantal'
+        ])
+            ->join('jenis_pekerjaan')
+            ->join('jenis_bantal')
+            ->where('id_progress', $id_progress)
+            ->get();
+
+
+        $data['id']        = $id_progress;
+
+        $data['page']      = 'pages/progress/form_edit_plan';
+        $data['title']     = 'Form Edit Perencanaan';
+        $data['nav_title'] = 'progress';
+
+        $this->view($data);
+    }
+
+    public function update_plan()
+    {
+        $idProgress = $this->input->post('id_progress', true);
+        $idPerencanaan = $this->input->post('id_perencanaan', true);
+
+        $idJenisPekerjaan = $this->input->post('id_jenis_pekerjaan', true);
+        $idJenisBantal = $this->input->post('id_jenis_bantal', true);
+        $kuantitas = $this->input->post('qty', true);
+        $data_update = array();
+
+        $i = 0;
+        foreach ($idProgress as $row) {
+            array_push($data_update, array(
+                'id'            => $idPerencanaan[$i],
+                'id_progress'   => $row,
+                'id_jenis_pekerjaan' => $idJenisPekerjaan[$i],
+                'id_jenis_bantal' => $idJenisBantal[$i],
+                'qty'   => $kuantitas[$i],
+                'nama_admin' => $this->session->userdata('name')
+            ));
+        }
+
+        if (count($data_update) > 0) {
+            if ($this->db->update_batch('perencanaan', $data_update, 'id')) {
+                $this->session->set_flashdata('success', 'Data has been updated!');
+            } else {
+                $this->session->set_flashdata('error', 'Oops! Something went wrong');
+            }
+        } else {
+            $this->session->set_flashdata('warning', 'Data has not found!');
+        }
+
+        redirect(base_url('progress'));
+    }
+
     public function cetakPdf($data, $id_progress)
     {
         $this->mypdf->generate('pages/progress/cetak_plan', $data, 'kartu_order_bal_' . $id_progress, 'A4', 'landscape');
@@ -310,7 +368,7 @@ class Progress extends MY_Controller
             ->where('perencanaan.id_progress', $id_progress)
             ->first();
 
-        
+
 
         //total_perencanaan
         $data['total_love'] = $this->progress->where('perencanaan.id_jenis_bantal', 1)->where('perencanaan.id_progress', $id_progress)->get();

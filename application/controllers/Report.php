@@ -6,6 +6,23 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Report extends MY_Controller
 {
 
+
+    public function __construct()
+    {
+        parent::__construct();
+        $role = $this->session->userdata('role');
+
+        if ($role == 'admin') {
+            // redirect(base_url());
+            return;
+        } else {
+            $this->session->set_flashdata('warning', 'Tidak Mempunyai Akses ke Menu Tersebut');
+            redirect(base_url());
+            return;
+        }
+    }
+
+
     public function index()
     {
     }
@@ -31,8 +48,8 @@ class Report extends MY_Controller
 
     public function mitra()
     {
-        $this->report->table = 'mitra';
-        $data['mitra'] = $this->report->get();
+        $this->report->table    = 'mitra';
+        $data['mitra']          = $this->report->get();
         $data['title']          = 'Laporan Mitra';
         $data['nav_title']      = 'laporan-mitra';
         $data['title_detail']   = 'Form Laporan Mitra';
@@ -46,13 +63,12 @@ class Report extends MY_Controller
     {
         $id_mitra = $this->input->post('id_mitra', true);
 
-        if($id_mitra){
+        if ($id_mitra) {
             $this->report->table = 'mitra';
             $data['getMitra'] = $this->report->where('id', $id_mitra)->first();
-
         }
 
-        if($data['getMitra']){
+        if ($data['getMitra']) {
             $this->load->view('pages/report/list_data_mitra', $data);
         }
     }
@@ -115,9 +131,9 @@ class Report extends MY_Controller
 
     public function requestMitraChart()
     {
-        
+
         $id_mitra = $this->input->post('id_mitra', true);
-        
+
 
         if ($id_mitra) {
             $this->report->table = 'distribusi';
@@ -133,7 +149,7 @@ class Report extends MY_Controller
                     ->where('YEAR(store.created_at)', date("Y"))
                     ->where('MONTH(store.created_at)', $i)
                     ->where('distribusi.status_pekerjaan', 'selesai')
-                    
+
                     ->get();
 
                 $data['proses' . $i] = $this->report->select(
@@ -146,17 +162,70 @@ class Report extends MY_Controller
                     ->where('YEAR(store.created_at)', date("Y"))
                     ->where('MONTH(store.created_at)', $i)
                     ->where('distribusi.status_pekerjaan', 'proses')
-                    
+
                     ->get();
             }
 
             echo json_encode($data);
-
-           
         }
 
 
         //}
+    }
+
+    public function distStore()
+    {
+        $data['page'] = 'pages/report/dist_store';
+        $data['title_detail']   = 'Form Laporan Distribusi & Store';
+        $data['nav_title'] = 'laporan-dist-store';
+
+        $this->view($data);
+    }
+
+    public function requestDistStore()
+    {
+        $fromDateDistStore = $this->input->post('fromDateDistStore', true);
+        $toDateDistStore   = $this->input->post('toDateDistStore', true);
+
+        $fromDateDistStore2 = strtotime($fromDateDistStore);
+        $toDateDistStore2   = strtotime($toDateDistStore);
+
+        if ($fromDateDistStore && $toDateDistStore) {
+
+            $this->report->table = 'mitra';
+            $data['content'] = $this->report->select([
+                'mitra.id', 'mitra.nama',
+                'SUM(store.jumlah_store) AS jumlah_store',
+                'SUM(distribusi.jumlah_set) AS jumlah_set'
+            ])
+                ->xjoin('distribusi')
+                ->joinAlt('store', 'distribusi')
+                ->where('store.created_at >=', date("Y-m-d", $fromDateDistStore2))
+                ->where('store.created_at <=', date("Y-m-d", $toDateDistStore2))
+                ->groupBy('mitra.id')
+                ->get();
+
+            $data['fromDate'] = $fromDateDistStore;
+            $data['toDate']   = $toDateDistStore;
+        }
+
+        $this->load->view('pages/report/list_report_dist_store', $data);
+    }
+
+    public function tes()
+    {
+        $this->report->table = 'mitra';
+        $data['content'] = $this->report->select([
+            'mitra.id', 'mitra.nama',
+            'SUM(store.jumlah_store) AS jumlah_store',
+            'SUM(distribusi.jumlah_set) AS jumlah_set'
+        ])
+            ->xjoin('distribusi')
+            ->joinAlt('store', 'distribusi')
+            ->groupBy('mitra.id')
+            ->get();
+
+        print_r($data['content']);
     }
 }
 

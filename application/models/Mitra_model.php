@@ -1,9 +1,10 @@
 <?php
 
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Mitra_model extends MY_Model {
+class Mitra_model extends MY_Model
+{
 
     public $table = 'mitra';
     public function getDefaultValues()
@@ -12,12 +13,12 @@ class Mitra_model extends MY_Model {
             'nama'    => '',
             'tgl_lahir'  => '',
             'tgl_mulai_kerja' => '',
-            'nohp' => '', 
+            'nohp' => '',
             'alamat' => '',
             'jenis_kelamin'  => '',
             'tempat'  => '',
             'status_nikah' => '',
-           
+
         ];
     }
 
@@ -54,17 +55,28 @@ class Mitra_model extends MY_Model {
                 'rules' => 'trim|required'
             ],
             [
-                'field' => 'alamat',
-                'label' => 'Alamat',
+                'field' => 'jenis_kelamin',
+                'label' => 'Jenis Kelamin',
                 'rules' => 'trim|required'
             ],
 
-           
+            [
+                'field' => 'tempat',
+                'label' => 'Tempat',
+                'rules' => 'trim|required'
+            ],
+
+            [
+                'field' => 'status_nikah',
+                'label' => 'Status',
+                'rules' => 'trim|required'
+            ],
+
+
         ];
 
         return $validationRules;
     }
-
 }
 
 /* End of file Mitra_model.php */

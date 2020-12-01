@@ -65,7 +65,7 @@ class Login extends MY_Controller
                 redirect(base_url());
             }
         } else { //jika proses login gagal maka direct ke halaman login lagi
-            $this->session->set_flashdata('error', 'Email atau Password salah');
+            $this->session->set_flashdata('error', 'Username atau Password salah');
             redirect(base_url('login'));
         }
     }

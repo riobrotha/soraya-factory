@@ -12,10 +12,11 @@
 
 <!-- Waves Effect Plugin Js -->
 <script src="<?= base_url('assets'); ?>/plugins/node-waves/waves.js"></script>
-
+<script src="<?= base_url('assets'); ?>/plugins/jquery-countto/jquery.countTo.js"></script>
 <!-- charjs -->
-<script src="<?= base_url('assets') ?>/plugins/chartjs/Chart.bundle.js"></script>
-
+<script src="<?= base_url('assets'); ?>/plugins/chartjs/Chart.bundle.js"></script>
+<!-- Sparkline Chart Plugin Js -->
+<script src="<?= base_url('assets'); ?>/plugins/jquery-sparkline/jquery.sparkline.js"></script>
 <!-- Autosize Plugin Js -->
 <script src="<?= base_url('assets'); ?>/plugins/autosize/autosize.js"></script>
 
@@ -51,6 +52,7 @@
 <script src="<?= base_url('assets'); ?>/js/pages/tables/jquery-datatable.js"></script>
 
 <!-- Demo Js -->
+
 <script src="<?= base_url('assets'); ?>/js/demo.js"></script>
 <script>
     Dropzone.autoDiscover = false;
@@ -86,6 +88,8 @@
             }],
         });
 
+        $('.myDatTab').DataTable();
+
         function getChartJs(type, nilai) {
             var config = null;
 
@@ -93,18 +97,57 @@
                 config = {
                     type: 'line',
                     data: {
-                        labels: ["January", "February", "March", "April", "May", "June", "July"],
+                        labels: [
+                            "Jan",
+                            "Feb",
+                            "Mar",
+                            "Apr",
+                            "Mei",
+                            "Jun",
+                            "Jul",
+                            "Aug",
+                            "Sep",
+                            "Okt",
+                            "Nov",
+                            "Dec"
+                        ],
                         datasets: [{
-                            label: "My First dataset",
-                            data: [65, 59, 80, 81, 56, 55, 40],
+                            label: "Selesai",
+                            data: [
+                                nilai.selesai1[0].jumlah,
+                                nilai.selesai2[0].jumlah,
+                                nilai.selesai3[0].jumlah,
+                                nilai.selesai4[0].jumlah,
+                                nilai.selesai5[0].jumlah,
+                                nilai.selesai6[0].jumlah,
+                                nilai.selesai7[0].jumlah,
+                                nilai.selesai8[0].jumlah,
+                                nilai.selesai9[0].jumlah,
+                                nilai.selesai10[0].jumlah,
+                                nilai.selesai11[0].jumlah,
+                                nilai.selesai12[0].jumlah
+                            ],
                             borderColor: 'rgba(0, 188, 212, 0.75)',
                             backgroundColor: 'rgba(0, 188, 212, 0.3)',
                             pointBorderColor: 'rgba(0, 188, 212, 0)',
                             pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
                             pointBorderWidth: 1
                         }, {
-                            label: "My Second dataset",
-                            data: [28, 48, 40, 19, 86, 27, 90],
+                            label: "Proses",
+                            data: [
+                                nilai.proses1[0].jumlah,
+                                nilai.proses2[0].jumlah,
+                                nilai.proses3[0].jumlah,
+                                nilai.proses4[0].jumlah,
+                                nilai.proses5[0].jumlah,
+                                nilai.proses6[0].jumlah,
+                                nilai.proses7[0].jumlah,
+                                nilai.proses8[0].jumlah,
+                                nilai.proses9[0].jumlah,
+                                nilai.proses10[0].jumlah,
+                                nilai.proses11[0].jumlah,
+                                nilai.proses12[0].jumlah
+                            ],
                             borderColor: 'rgba(233, 30, 99, 0.75)',
                             backgroundColor: 'rgba(233, 30, 99, 0.3)',
                             pointBorderColor: 'rgba(233, 30, 99, 0)',
@@ -411,7 +454,7 @@
                     $('.chartjs-hidden-iframe').remove();
                     $('#bar_chart').remove();
                     $('#chart_place').html('<canvas id="bar_chart"></canvas>');
-                    new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar', data));
+                    new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('line', data));
                 }
             });
         });
@@ -430,6 +473,30 @@
                 },
                 success: function(response) {
                     $('.result-data-mitra').html(response);
+                    $('#loadIcon').hide();
+                }
+            });
+        });
+
+
+        $(document).on('submit', '#form_report_dist_store', function(e) {
+            e.preventDefault();
+            var fromDateDistStore = $('#from_date_dist_store').val();
+            var toDateDistStore = $('#to_date_dist_store').val();
+
+            $.ajax({
+                method: "POST",
+                url: "<?php echo base_url('report/requestDistStore') ?>",
+                data: {
+                    fromDateDistStore: fromDateDistStore,
+                    toDateDistStore: toDateDistStore
+                },
+                beforeSend: function() {
+                    $('#loadIcon').show();
+                },
+                success: function(response) {
+                    $('.result-data-dist-store').html(response);
+                    $('.myDatTab').DataTable();
                     $('#loadIcon').hide();
                 }
             });
@@ -562,9 +629,224 @@
 
         }
 
+        loadChartDashboard();
+        loadChartProgressDashboard();
+
+        function loadChartDashboard() {
+            $.ajax({
+                method: "POST",
+                url: "<?php echo base_url("home/requestProgressChart") ?>",
 
 
+                success: function(response) {
+                    var data = JSON.parse(response);
+
+                    //$('.chartjs-hidden-iframe').remove();
+                    $('#store_chart').remove();
+                    $('#dashboard_chart_place').html('<canvas id="store_chart"></canvas>');
+                    new Chart(document.getElementById("store_chart").getContext("2d"), getChartDashboard('line', data));
+                }
+            });
+        }
+
+        function loadChartProgressDashboard() {
+            $.ajax({
+                method: "POST",
+                url: "<?php echo base_url("home/requestCountDoneProgress") ?>",
+
+
+                success: function(response) {
+                    var data = JSON.parse(response);
+
+                    //$('.chartjs-hidden-iframe').remove();
+                    $('#progress_chart').remove();
+                    $('#progress_chart_place').html('<canvas id="progress_chart"></canvas>');
+                    new Chart(document.getElementById("progress_chart").getContext("2d"), getChartDashboard('bar', data));
+                }
+            });
+        }
+
+        //new Chart(document.getElementById("store_chart").getContext("2d"), getChartDashboard('line', data));
+
+        function getChartDashboard(type, nilai) {
+            var config = null;
+
+            if (type === 'line') {
+                config = {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            "Jan",
+                            "Feb",
+                            "Mar",
+                            "Apr",
+                            "Mei",
+                            "Jun",
+                            "Jul",
+                            "Aug",
+                            "Sep",
+                            "Okt",
+                            "Nov",
+                            "Dec"
+                        ],
+                        datasets: [{
+                                label: "Selesai",
+                                data: [
+                                    nilai.selesai1[0].jumlah == null ? 0 : nilai.selesai1[0].jumlah,
+                                    nilai.selesai2[0].jumlah == null ? 0 : nilai.selesai2[0].jumlah,
+                                    nilai.selesai3[0].jumlah == null ? 0 : nilai.selesai3[0].jumlah,
+                                    nilai.selesai4[0].jumlah == null ? 0 : nilai.selesai4[0].jumlah,
+                                    nilai.selesai5[0].jumlah == null ? 0 : nilai.selesai5[0].jumlah,
+                                    nilai.selesai6[0].jumlah == null ? 0 : nilai.selesai6[0].jumlah,
+                                    nilai.selesai7[0].jumlah == null ? 0 : nilai.selesai7[0].jumlah,
+                                    nilai.selesai8[0].jumlah == null ? 0 : nilai.selesai8[0].jumlah,
+                                    nilai.selesai9[0].jumlah == null ? 0 : nilai.selesai9[0].jumlah,
+                                    nilai.selesai10[0].jumlah == null ? 0 : nilai.selesai10[0].jumlah,
+                                    nilai.selesai11[0].jumlah == null ? 0 : nilai.selesai11[0].jumlah,
+                                    nilai.selesai12[0].jumlah == null ? 0 : nilai.selesai12[0].jumlah,
+                                ],
+                                borderColor: 'rgba(0, 188, 212, 0.75)',
+                                backgroundColor: 'rgba(0, 188, 212, 0.3)',
+                                pointBorderColor: 'rgba(0, 188, 212, 0)',
+                                pointBackgroundColor: 'rgba(0, 188, 212, 0.9)',
+                                pointBorderWidth: 1
+                            }, {
+                                label: "Dikerjakan",
+                                data: [
+                                    nilai.dikerjakan1[0].jumlah == null ? 0 : nilai.dikerjakan1[0].jumlah,
+                                    nilai.dikerjakan2[0].jumlah == null ? 0 : nilai.dikerjakan2[0].jumlah,
+                                    nilai.dikerjakan3[0].jumlah == null ? 0 : nilai.dikerjakan3[0].jumlah,
+                                    nilai.dikerjakan4[0].jumlah == null ? 0 : nilai.dikerjakan4[0].jumlah,
+                                    nilai.dikerjakan5[0].jumlah == null ? 0 : nilai.dikerjakan5[0].jumlah,
+                                    nilai.dikerjakan6[0].jumlah == null ? 0 : nilai.dikerjakan6[0].jumlah,
+                                    nilai.dikerjakan7[0].jumlah == null ? 0 : nilai.dikerjakan7[0].jumlah,
+                                    nilai.dikerjakan8[0].jumlah == null ? 0 : nilai.dikerjakan8[0].jumlah,
+                                    nilai.dikerjakan9[0].jumlah == null ? 0 : nilai.dikerjakan9[0].jumlah,
+                                    nilai.dikerjakan10[0].jumlah == null ? 0 : nilai.dikerjakan10[0].jumlah,
+                                    nilai.dikerjakan11[0].jumlah == null ? 0 : nilai.dikerjakan11[0].jumlah,
+                                    nilai.dikerjakan12[0].jumlah == null ? 0 : nilai.dikerjakan12[0].jumlah,
+                                ],
+                                borderColor: 'rgba(233, 30, 99, 0.75)',
+                                backgroundColor: 'rgba(233, 30, 99, 0.3)',
+                                pointBorderColor: 'rgba(233, 30, 99, 0)',
+                                pointBackgroundColor: 'rgba(233, 30, 99, 0.9)',
+                                pointBorderWidth: 1
+                            },
+                            {
+                                label: "Proses",
+                                data: [
+                                    nilai.proses1[0].jumlah == null ? 0 : nilai.proses1[0].jumlah,
+                                    nilai.proses2[0].jumlah == null ? 0 : nilai.proses2[0].jumlah,
+                                    nilai.proses3[0].jumlah == null ? 0 : nilai.proses3[0].jumlah,
+                                    nilai.proses4[0].jumlah == null ? 0 : nilai.proses4[0].jumlah,
+                                    nilai.proses5[0].jumlah == null ? 0 : nilai.proses5[0].jumlah,
+                                    nilai.proses6[0].jumlah == null ? 0 : nilai.proses6[0].jumlah,
+                                    nilai.proses7[0].jumlah == null ? 0 : nilai.proses7[0].jumlah,
+                                    nilai.proses8[0].jumlah == null ? 0 : nilai.proses8[0].jumlah,
+                                    nilai.proses9[0].jumlah == null ? 0 : nilai.proses9[0].jumlah,
+                                    nilai.proses10[0].jumlah == null ? 0 : nilai.proses10[0].jumlah,
+                                    nilai.proses11[0].jumlah == null ? 0 : nilai.proses11[0].jumlah,
+                                    nilai.proses12[0].jumlah == null ? 0 : nilai.proses12[0].jumlah,
+                                ],
+                                borderColor: 'rgba(241, 238, 74, 0.75)',
+                                backgroundColor: 'rgba(240, 239, 167, 0.3)',
+                                pointBorderColor: 'rgba(241, 238, 74, 0)',
+                                pointBackgroundColor: 'rgba(241, 238, 74, 0.9)',
+                                pointBorderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            } else if (type === 'bar') {
+                config = {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            "Selesai",
+                            "Belum Selesai",
+                            "Dikerjakan"
+                        ],
+                        datasets: [{
+                                label: "Jumlah",
+                                data: [
+                                    nilai.selesai,
+                                    nilai.belum_selesai,
+                                    nilai.dikerjakan
+
+                                ],
+                                backgroundColor: ['rgba(0, 188, 212, 0.6)', 'rgba(241, 238, 74, 0.6)', 'rgba(233, 30, 99, 0.6)'],
+
+                            }
+
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: true
+                    },
+                }
+            } else if (type === 'radar') {
+                config = {
+                    type: 'radar',
+                    data: {
+                        labels: ["January", "February", "March", "April", "May", "June", "July"],
+                        datasets: [{
+                            label: "My First dataset",
+                            data: [65, 25, 90, 81, 56, 55, 40],
+                            borderColor: 'rgba(0, 188, 212, 0.8)',
+                            backgroundColor: 'rgba(0, 188, 212, 0.5)',
+                            pointBorderColor: 'rgba(0, 188, 212, 0)',
+                            pointBackgroundColor: 'rgba(0, 188, 212, 0.8)',
+                            pointBorderWidth: 1
+                        }, {
+                            label: "My Second dataset",
+                            data: [72, 48, 40, 19, 96, 27, 100],
+                            borderColor: 'rgba(233, 30, 99, 0.8)',
+                            backgroundColor: 'rgba(233, 30, 99, 0.5)',
+                            pointBorderColor: 'rgba(233, 30, 99, 0)',
+                            pointBackgroundColor: 'rgba(233, 30, 99, 0.8)',
+                            pointBorderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            } else if (type === 'pie') {
+                config = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: [225, 50, 100, 40],
+                            backgroundColor: [
+                                "rgb(233, 30, 99)",
+                                "rgb(255, 193, 7)",
+                                "rgb(0, 188, 212)",
+                                "rgb(139, 195, 74)"
+                            ],
+                        }],
+                        labels: [
+                            "Pink",
+                            "Amber",
+                            "Cyan",
+                            "Light Green"
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        legend: false
+                    }
+                }
+            }
+            return config;
+        }
 
 
     });
 </script>
+<script src="<?= base_url('assets'); ?>/js/pages/index.js"></script>

@@ -17,6 +17,8 @@ function show_my_modal($content = '', $id = '', $data = '', $size = 'md')
   }
 }
 
+
+
 function getKodeMax()
 {
   $CI     = &get_instance();
@@ -58,6 +60,14 @@ function checkStatusSelesaiDistribusi($id_progress)
 {
   $CI     = &get_instance();
   $query = $CI->db->query("SELECT * FROM distribusi WHERE id_progress = '$id_progress' AND status_pekerjaan = 'selesai'");
+  $result = $query->num_rows();
+  return $result;
+}
+
+function checkStatusDikerjakanDistribusi($id_progress)
+{
+  $CI     = &get_instance();
+  $query = $CI->db->query("SELECT * FROM distribusi WHERE id_progress = '$id_progress' AND status_pekerjaan = 'dikerjakan'");
   $result = $query->num_rows();
   return $result;
 }

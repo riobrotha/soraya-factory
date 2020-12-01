@@ -13,7 +13,7 @@
                 <th>Tempat</th>
                 <th>Status</th>
                 <th>Action</th>
-
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -48,8 +48,31 @@
                         }
 
                         ?></td>
-                    <td><a href="<?= base_url("mitra/moveMitra/$row->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')">Keluarkan</a></td>
+                    <td>
+                        <?php if ($nav_title != 'mitra_out') : ?>
+                            <a href="<?= base_url("mitra/moveToMitraOut/$row->id") ?>" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin mengeluarkan mitra ini?')">Keluarkan</a>
+                        <?php else : ?>
+                            <a href="<?= base_url("mitra/moveToMitra/$row->id") ?>" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin ingin memasukkan kembali mitra ini?')">Masukkan</a>
+                        <?php endif ?>
+                    </td>
+                    <th style="text-align: right;">
+                        <?php if ($nav_title == 'mitra') : ?>
+                            <ul class="header-dropdown m-r--5" style="list-style: none;">
 
+                                <li class="dropdown">
+                                    <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="material-icons md-18" style="color: #999999;">more_vert</i>
+                                    </a>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="<?= base_url("mitra/edit/$row->id"); ?>" style="color: #03A9F4;"><i class="material-icons md-18">create</i>Edit</a></li>
+                                        <li><a href="javascript:void(0);" style="color: #F44336;" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class="material-icons md-18">delete</i>Delete</a></li>
+
+
+                                    </ul>
+                                </li>
+                            </ul>
+                        <?php endif ?>
+                    </th>
                 </tr>
             <?php endforeach ?>
         </tbody>

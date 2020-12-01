@@ -28,8 +28,8 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">MAIN NAVIGATION</li>
-                <li>
-                    <a href="../../index.html">
+                <li class="<?= $nav_title == "home" ? "active" : "" ?>"> 
+                    <a href="<?= base_url("home"); ?>">
                         <i class="material-icons">home</i>
                         <span>Home</span>
                     </a>
@@ -39,6 +39,13 @@
                     <a href="<?= base_url('mitra'); ?>">
                         <i class="material-icons">person</i>
                         <span>Mitra</span>
+                    </a>
+                </li>
+
+                <li class="<?= $nav_title == "mitra_out" ? "active" : "" ?>">
+                    <a href="<?= base_url('mitra/out'); ?>">
+                        <i class="material-icons">error</i>
+                        <span>Mitra Out</span>
                     </a>
                 </li>
 
@@ -91,6 +98,13 @@
                     <a href="<?= base_url('report/mitra'); ?>">
                         <i class="material-icons">description</i>
                         <span>Laporan Mitra</span>
+                    </a>
+                </li>
+
+                <li class="<?= $nav_title == "laporan-dist-store" ? "active" : "" ?>">
+                    <a href="<?= base_url('report/distStore'); ?>">
+                        <i class="material-icons">description</i>
+                        <span>Laporan Distribusi Dan Store</span>
                     </a>
                 </li>
             </ul>

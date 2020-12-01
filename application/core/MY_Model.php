@@ -90,6 +90,18 @@ class MY_Model extends CI_Model
         $this->db->join($table, "$this->table.id = $table.id_$this->table");
         return $this;
     }
+
+    public function joinAlt($table, $table2, $type = 'left')
+    {
+        $this->db->join($table, "$table2.id = $table.id_$table2");
+        return $this;
+    }
+
+    public function joinAlt2($table, $table2, $type = 'left')
+    {
+        $this->db->join($table, "$table2.id_$table = $table.id");
+        return $this;
+    }
     public function inner_join($table, $type = 'inner')
     {
         $this->db->join($table, "$this->table.id_$table = $table.id", $type);
