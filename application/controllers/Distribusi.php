@@ -13,11 +13,11 @@ class Distribusi extends MY_Controller
 
         if ($role == 'admin' || $role == 'admin_distribusi') {
             // redirect(base_url());
-             return;
-         } else {
-             redirect(base_url());
-             return;
-         }
+            return;
+        } else {
+            redirect(base_url());
+            return;
+        }
     }
 
     public function index()
@@ -36,15 +36,10 @@ class Distribusi extends MY_Controller
 
     public function add_work($id)
     {
-        // $data['content'] = $this->distribusi->where('id', $id)->first();
-        // if (!$data['content']) {
-        //     $this->session->set_flashdata('warning', 'Sorry, data not found');
-        //     redirect(base_url('distribusi'));
-        // }
+
         $data['id'] = $id;
 
-        // $this->distribusi->table = 'jenis_pekerjaan';
-        //$data['jenis_pekerjaan'] = $this->distribusi->get();
+
         $data['title'] = 'Tambah Pembagian Kerja';
         $data['nav_title'] = 'distribusi';
         $data['page'] = 'pages/distribusi/form';
@@ -109,6 +104,69 @@ class Distribusi extends MY_Controller
 
         redirect('distribusi');
     }
+
+    public function edit_distribusi($id_progress)
+    {
+
+        $this->distribusi->table = 'mitra';
+        $data['getMitra'] = $this->distribusi->get();
+
+        $this->distribusi->table = 'mitrawork';
+        $data['getJenisPekerjaan'] = $this->distribusi->get();
+        $data['id']     = $id_progress;
+
+
+        $this->distribusi->table = 'distribusi';
+        $data['getDist']    = $this->distribusi->where('id_progress', $id_progress)->get();
+
+
+        $data['page']   = 'pages/distribusi/form_edit';
+        $data['title'] = 'Edit Pembagian Kerja';
+        $data['nav_title'] = 'distribusi';
+
+        $this->view($data);
+    }
+
+    public function update_work()
+    {
+        $idProgress = $this->input->post('id_progress', true);
+        $idDistribusi = $this->input->post('id_distribusi', true);
+
+        $idMitra = $this->input->post('id_mitra', true);
+        $idMitraWork = $this->input->post('id_mitrawork', true);
+        $jumlahSet = $this->input->post('jumlah_set', true);
+        $data_update = array();
+
+        $i = 0;
+        foreach ($idProgress as $row) {
+            $data_update[] = array(
+                'id'            => $idDistribusi[$i],
+                'id_progress'   => $row,
+                'id_mitra'  => $idMitra[$i],
+                'id_mitrawork' => $idMitraWork[$i],
+                'jumlah_set'   => $jumlahSet[$i],
+                'nama_admin' => $this->session->userdata('name')
+            );
+
+            $i++;
+        }
+
+
+
+        if (count($data_update) > 0) {
+            if ($this->db->update_batch('distribusi', $data_update, 'id')) {
+                $this->session->set_flashdata('success', 'Data has been updated!');
+            } else {
+                $this->session->set_flashdata('error', 'Oops! Something went wrong');
+            }
+        } else {
+            $this->session->set_flashdata('warning', 'Data has not found!');
+        }
+
+        redirect(base_url('distribusi'));
+    }
+
+    
 
     public function showForm($id_progress)
     {

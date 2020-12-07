@@ -8,8 +8,8 @@
                     <div class="header">
                         <h1><?= $id; ?></h1>
                         <h2>
-                            EDIT PERENCANAAN
-                            <small>Isi form di bawah ini, untuk mengubah data perencanaan.</small>
+                            EDIT REALISASI PERENCANAAN GUNTING
+                            <small>Isi form di bawah ini, untuk mengubah realisasi perencanaan gunting.</small>
                         </h2>
                         <ul class="header-dropdown m-r--5">
                             <li class="dropdown">
@@ -26,47 +26,57 @@
                     </div>
                     <div class="body">
 
-                        <?= form_open_multipart('progress/update_plan/' . $id, ['method' => 'POST']); ?>
+                        <?= form_open_multipart('progress/update_realisasi/', ['method' => 'POST']); ?>
                         <?= isset($id) ? '<input type="hidden" name="id" value="' . $id . '" id="idProgress">' : ''; ?>
 
                         <!-- <h2 class="card-inside-title">Data Perencanaan</h2> -->
                         <div class="row clearfix">
-
                             <?php foreach ($getPerencanaan as $row) : ?>
                                 <input type="hidden" name="id_perencanaan[]" value="<?= $row->id_perencanaan; ?>">
                                 <input type="hidden" name="id_progress[]" value="<?= $row->id_progress; ?>">
+                                <input type="hidden" name="id_realisasi[]" value="<?= $row->id_realisasi; ?>">
 
-                                <div class="col-xs-4" style="margin-top: 20px;">
+                                <div class="col-xs-3" style="margin-top: 20px;">
                                     <h2 class="card-inside-title"> Jenis Pekerjaan</h2>
                                     <div class="form-group">
                                         <div class="form-line">
-                                            <?= form_dropdown('id_jenis_pekerjaan[]', getDropdownList('jenis_pekerjaan', ['id', 'nama_pekerjaan']), $row->id_jenis_pekerjaan, ['class' => 'form-control']); ?>
-                                            
+
+                                            <input type="hidden" class="form-control" value="<?= $row->id_jenis_pekerjaan; ?>"/>
+                                            <input type="text" class="form-control" value="<?= $row->nama_pekerjaan ?>" disabled />
                                         </div>
 
                                     </div>
                                 </div>
-                                <div class="col-xs-4" style="margin-top: 20px;">
+                                <div class="col-xs-3" style="margin-top: 20px;">
                                     <h2 class="card-inside-title"> Jenis Bantal</h2>
                                     <div class="form-group">
                                         <div class="form-line">
 
-                                        <?= form_dropdown('id_jenis_bantal[]', getDropdownList('jenis_bantal', ['id', 'nama_jenis_bantal']), $row->id_jenis_bantal, ['class' => 'form-control']); ?>
+                                            <input type="hidden" class="form-control" value="<?= $row->id_jenis_bantal ?>" />
+                                            <input type="text" class="form-control" value="<?= $row->nama_jenis_bantal ?>" disabled />
                                         </div>
 
                                     </div>
                                 </div>
-                                <div class="col-xs-4" style="margin-top: 20px;">
-                                    <h2 class="card-inside-title">Jumlah Store Pekerjaan</h2>
+                                <div class="col-xs-3" style="margin-top: 20px;">
+                                    <h2 class="card-inside-title">Kuantitas Rencana</h2>
                                     <div class="form-group">
                                         <div class="form-line">
-
-                                            <input type="text" class="form-control" name="qty[]" value="<?= $row->qty ?>" />
+                                            <input type="hidden" class="form-control" value="<?= $row->qty ?>" />
+                                            <input type="text" class="form-control" value="<?= $row->qty ?>" disabled />
                                         </div>
 
                                     </div>
                                 </div>
-                              
+                                <div class="col-xs-3" style="margin-top: 20px;">
+                                    <h2 class="card-inside-title">Kuantitas Realisasi</h2>
+                                    <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text" class="form-control" value="<?= $row->qty_realisasi ?>" name="kuantitas_realisasi[]" />
+                                        </div>
+
+                                    </div>
+                                </div>
                             <?php endforeach ?>
 
 

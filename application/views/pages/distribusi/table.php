@@ -10,7 +10,7 @@
         </thead>
         <tbody>
             <?php foreach ($content as $row) : ?>
-                <?php if (checkRencana($row->id) > 0) : ?>
+                <?php if (checkRencana($row->id) > 0 && checkRealisasi($row->id) > 0) : ?>
                     <?php if ($row->status_pekerjaan = 'dikerjakan') : ?>
                         <tr>
                             <td><?= $row->id; ?></td>
@@ -19,9 +19,14 @@
                             <!-- <td><?= date_format(new DateTime($row->tanggal), "H:i"); ?>&nbsp;WIB</td> -->
                             <td>
                                 <div class="text-center">
-                                    <a href="<?= base_url("distribusi/add_work/$row->id"); ?>" class="btn btn-info waves-effect">Tambah Pembagian Tugas</a>
+                                    <?php if (checkRealisasi($row->id) > 0) : ?>
+                                        <a href="<?= base_url("distribusi/add_work/$row->id"); ?>" class="btn btn-info waves-effect">Tambah Pembagian Tugas</a>
+                                    <?php else : ?>
+                                        <span class="col-deep-orange"><strong>Harap Tambahkan Realisasi Terlebih Dahulu!</strong></span>
+                                    <?php endif ?>
                                     <?php if (checkDistribusi($row->id) > 0) : ?>
                                         <a href="#" class="btn btn-success waves-effect view" data-id="<?= $row->id; ?>">View</a>
+                                        <a href="<?= base_url("distribusi/edit_distribusi/$row->id") ?>" class="btn btn-warning waves-effect" data-id="<?= $row->id; ?>">Edit Pembagian Tugas</a>
                                     <?php endif ?>
 
                                 </div>

@@ -55,10 +55,10 @@
                     <tr>
                         <td align="center">
                             <span style="line-height: 1.6; font-weight: 300; font-size: 26px;">
-                               KARTU ORDER KAIN BAL
-                               
-                               
-                            </span> 
+                                KARTU ORDER KAIN BAL
+
+
+                            </span>
                             <!-- <span>rio pambudhi</span> -->
                         </td>
                     </tr>
@@ -93,11 +93,10 @@
 
                     </tr>
                     <tr>
-                        <th>LOVE</th>
-                        <th>BT</th>
-                        <th>BIS</th>
-                        <th>RC</th>
-                        <th>DSC</th>
+                        <?php foreach ($jenis_bantal as $row) : ?>
+                            <th><?= $row->nama_jenis_bantal; ?></th>
+
+                        <?php endforeach ?>
                     </tr>
 
                 </thead>
@@ -107,11 +106,17 @@
                         <tr>
                             <td><?= $no++; ?></td>
                             <td><?= $row->nama_pekerjaan; ?></td>
-                            <td><?= $row->id_jenis_bantal == 1 ? $row->qty : " " ?></td>
-                            <td><?= $row->id_jenis_bantal == 2 ? $row->qty : " " ?></td>
-                            <td><?= $row->id_jenis_bantal == 3 ? $row->qty : " " ?></td>
-                            <td><?= $row->id_jenis_bantal == 4 ? $row->qty : " " ?></td>
-                            <td><?= $row->id_jenis_bantal == 5 ? $row->qty : " " ?></td>
+
+                            <?php foreach ($jenis_bantal as $row2) : ?>
+                                <?php  ?>
+                                <td>
+                                    <?php if ($row2->id == $row->id_jenis_bantal) {
+                                        echo $row->qty;
+                                    }
+                                    ?>
+                                </td>
+                            <?php endforeach ?>
+                          
 
 
 
@@ -124,11 +129,10 @@
                         <td>
                             <h4><b>Total :</b></h4>
                         </td>
-                        <td><?php echo array_sum(array_column($total_love, 'qty')) != 0 ? array_sum(array_column($total_love, 'qty')) : '-'  ?></td>
-                        <td><?php echo array_sum(array_column($total_bt, 'qty')) != 0 ? array_sum(array_column($total_bt, 'qty')) : '-'  ?></td>
-                        <td><?php echo array_sum(array_column($total_bis, 'qty')) != 0 ? array_sum(array_column($total_bis, 'qty')) : '-'  ?></td>
-                        <td><?php echo array_sum(array_column($total_rc, 'qty')) != 0 ? array_sum(array_column($total_rc, 'qty')) : '-'  ?></td>
-                        <td><?php echo array_sum(array_column($total_dsc, 'qty')) != 0 ? array_sum(array_column($total_dsc, 'qty')) : '-'  ?></td>
+                        <?php foreach ($jenis_bantal as $row) : ?>
+                            <td><?php echo array_sum(array_column($total['bt' . $row->id], 'qty')) != 0 ? array_sum(array_column($total['bt' . $row->id], 'qty')) : '-'  ?></td>
+                        <?php endforeach ?>
+
 
                     </tr>
                 </tfoot>
@@ -176,11 +180,11 @@
                         <td>
                             <h4><b>Total :</b></h4>
                         </td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
 
                     </tr>
                 </tfoot>

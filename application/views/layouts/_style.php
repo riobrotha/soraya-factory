@@ -27,7 +27,7 @@
  <link href="<?= base_url('assets'); ?>/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
  <!-- Bootstrap Select Css -->
- <!-- <link href="<?= base_url('assets'); ?>/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" /> -->
+ <link href="<?= base_url('assets'); ?>/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
 
  <!-- JQuery DataTable Css -->
  <link href="<?= base_url('assets'); ?>/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
@@ -180,5 +180,9 @@ Have no idea why this written like this, without it the ui breaks works, can any
      div.block-m {
          left: 178px;
          top: 98px
+     }
+
+     .dropdown-menu{
+         padding-left: 20px !important;
      }
  </style>

@@ -15,7 +15,7 @@ class Login extends MY_Controller
         if ($is_login) {
 
             if ($role == 'admin') {
-                redirect(base_url("mitra"));
+                redirect(base_url("home"));
                 return;
             } else if ($role == 'admin_gunting') {
                 $this->session->set_flashdata('warning', 'Tidak Mempunyai Akses ke Menu Tersebut.');
@@ -58,7 +58,7 @@ class Login extends MY_Controller
         if ($this->login->run($input)) {
             $this->session->set_flashdata('success', 'Berhasil melakukan login');
             if ($this->session->userdata('role') == 'admin') {
-                redirect(base_url('mitra'));
+                redirect(base_url('home'));
             } else if ($this->session->userdata('role') == 'admin_gunting') {
                 redirect(base_url('progress'));
             } else {

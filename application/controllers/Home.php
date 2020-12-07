@@ -149,19 +149,7 @@ class Home extends MY_Controller
         //print_r($data['progress']);
     }
 
-    public function tes()
-    {
-        $this->home->table = 'store AS s';
-        $data['countStore'] = $this->home->select([
-            's.jumlah_store', 'progress.tanggal'
-        ])
-            ->join('distribusi')
-            ->joinAlt2('progress', 'distribusi')
-            ->get();
 
-
-        print_r($data['countStore']);
-    }
 }
 
 /* End of file Home.php */

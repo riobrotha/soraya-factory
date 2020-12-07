@@ -172,15 +172,19 @@ class Progress extends MY_Controller
 
         $i = 0;
         foreach ($idProgress as $row) {
-            array_push($data_update, array(
+            $data_update[] = array(
                 'id'            => $idPerencanaan[$i],
                 'id_progress'   => $row,
                 'id_jenis_pekerjaan' => $idJenisPekerjaan[$i],
                 'id_jenis_bantal' => $idJenisBantal[$i],
                 'qty'   => $kuantitas[$i],
                 'nama_admin' => $this->session->userdata('name')
-            ));
+            );
+
+            $i++;
         }
+
+
 
         if (count($data_update) > 0) {
             if ($this->db->update_batch('perencanaan', $data_update, 'id')) {
@@ -205,11 +209,13 @@ class Progress extends MY_Controller
         $this->progress->table = 'perencanaan';
         $data['id_progress'] = $id_progress;
         $data['perencanaan'] = $this->progress->select([
-            'jenis_pekerjaan.nama_pekerjaan', 'perencanaan.id_progress', 'perencanaan.qty', 'perencanaan.id_jenis_bantal'
+            'jenis_pekerjaan.nama_pekerjaan', 'perencanaan.id_progress', 'perencanaan.qty', 'perencanaan.id_jenis_bantal', 'perencanaan.id_jenis_pekerjaan'
         ])
             ->join('jenis_pekerjaan')
             ->where('perencanaan.id_progress', $id_progress)
             ->get();
+
+
 
         $data['nama_admin'] = $this->progress->select([
             'perencanaan.nama_admin'
@@ -217,16 +223,34 @@ class Progress extends MY_Controller
             ->where('perencanaan.id_progress', $id_progress)
             ->first();
 
-        $data['total_love'] = $this->progress->where('perencanaan.id_jenis_bantal', 1)->where('perencanaan.id_progress', $id_progress)->get();
-        $data['total_bt'] = $this->progress->where('perencanaan.id_jenis_bantal', 2)->where('perencanaan.id_progress', $id_progress)->get();
-        $data['total_bis'] = $this->progress->where('perencanaan.id_jenis_bantal', 3)->where('perencanaan.id_progress', $id_progress)->get();
-        $data['total_rc'] = $this->progress->where('perencanaan.id_jenis_bantal', 4)->where('perencanaan.id_progress', $id_progress)->get();
-        $data['total_dsc'] = $this->progress->where('perencanaan.id_jenis_bantal', 5)->where('perencanaan.id_progress', $id_progress)->get();
+
 
         $this->progress->table = 'progress';
         $data['tanggal_progress'] = $this->progress->where('id', $id_progress)->first();
 
+        $this->progress->table = 'jenis_bantal';
+        $data['jenis_bantal'] = $this->progress->get();
+
+
+        foreach ($data['jenis_bantal'] as $row) {
+            $this->progress->table = 'perencanaan';
+            $data['total']['bt'. $row->id] =
+                $this->progress->where('perencanaan.id_jenis_bantal', $row->id)
+                ->where('perencanaan.id_progress', $id_progress)
+                ->get();
+        }
+
+        $this->progress->table = 'jenis_pekerjaan';
+        $data['jenis_pekerjaan'] = $this->progress->get();
+
+        // $data['total_love'] = $this->progress->where('perencanaan.id_jenis_bantal', 1)->where('perencanaan.id_progress', $id_progress)->get();
+        // $data['total_bt'] = $this->progress->where('perencanaan.id_jenis_bantal', 2)->where('perencanaan.id_progress', $id_progress)->get();
+        // $data['total_bis'] = $this->progress->where('perencanaan.id_jenis_bantal', 3)->where('perencanaan.id_progress', $id_progress)->get();
+        // $data['total_rc'] = $this->progress->where('perencanaan.id_jenis_bantal', 4)->where('perencanaan.id_progress', $id_progress)->get();
+        // $data['total_dsc'] = $this->progress->where('perencanaan.id_jenis_bantal', 5)->where('perencanaan.id_progress', $id_progress)->get();
         // $this->cetakPdf($data, $id_progress);
+
+        //print_r($data['total']['bt1']);
         $this->load->view('pages/progress/cetak_plan', $data);
     }
 
@@ -346,6 +370,62 @@ class Progress extends MY_Controller
             $this->session->set_flashdata('success', 'Data has been saved!');
             redirect('progress/realisasi');
         }
+    }
+
+    public function edit_realisasi($id_progress)
+    {
+        $this->progress->table = 'perencanaan';
+        $data['getPerencanaan'] = $this->progress->select([
+            'perencanaan.id AS id_perencanaan', 'perencanaan.id_progress', 'perencanaan.id_jenis_pekerjaan', 'perencanaan.id_jenis_bantal',
+            'perencanaan.qty', 'perencanaan.nama_admin',
+            'jenis_pekerjaan.nama_pekerjaan', 'jenis_bantal.nama_jenis_bantal', 'realisasi.qty AS qty_realisasi', 'realisasi.id AS id_realisasi'
+        ])
+            ->join('jenis_pekerjaan')
+            ->join('jenis_bantal')
+            ->xjoin('realisasi')
+            ->where('id_progress', $id_progress)
+            ->get();
+
+        //print_r($data['getPerencanaan']);
+        $data['id']        = $id_progress;
+        $data['page']      = 'pages/progress/form_edit_realisasi';
+        $data['title']     = 'Form Edit Realisasi Perencanaan';
+        $data['nav_title'] = 'progress';
+
+        $this->view($data);
+    }
+
+    public function update_realisasi()
+    {
+        $idProgress = $this->input->post('id_progress', true);
+        $idRealisasi = $this->input->post('id_realisasi' ,true);
+        $kuantitas = $this->input->post('kuantitas_realisasi', true);
+        $data_update = array();
+
+        $i = 0;
+        foreach ($idProgress as $row) {
+            $data_update[] = array(
+                'id'            => $idRealisasi[$i],
+                'qty'   => $kuantitas[$i],
+                'nama_admin' => $this->session->userdata('name')
+            );
+
+            $i++;
+        }
+
+
+
+        if (count($data_update) > 0) {
+            if ($this->db->update_batch('realisasi', $data_update, 'id')) {
+                $this->session->set_flashdata('success', 'Data has been updated!');
+            } else {
+                $this->session->set_flashdata('error', 'Oops! Something went wrong');
+            }
+        } else {
+            $this->session->set_flashdata('warning', 'Data has not found!');
+        }
+
+        redirect(base_url('progress/realisasi'));
     }
 
     public function preview($id_progress)

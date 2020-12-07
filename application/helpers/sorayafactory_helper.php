@@ -35,6 +35,8 @@ function checkRencana($id_progress)
   return $result;
 }
 
+
+
 function checkRealisasi($id_progress)
 {
   $CI       = &get_instance();

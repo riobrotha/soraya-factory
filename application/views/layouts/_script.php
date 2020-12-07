@@ -48,12 +48,13 @@
 <!-- <script src="<?= base_url('assets'); ?>/js/pages/charts/chartjs.js"></script> -->
 
 <script src="<?= base_url('assets'); ?>/js/pages/forms/basic-form-elements.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="<?= base_url('assets'); ?>/js/pages/tables/jquery-datatable.js"></script>
 
 <!-- Demo Js -->
 
 <script src="<?= base_url('assets'); ?>/js/demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
 <script>
     Dropzone.autoDiscover = false;
     var myDropzone = new Dropzone("#my-dropzone", {
@@ -89,7 +90,7 @@
         });
 
         $('.myDatTab').DataTable();
-
+        
         function getChartJs(type, nilai) {
             var config = null;
 
@@ -367,6 +368,7 @@
 
 
         loadForm();
+        $('#select2222').select2();
         loadSelect2ReportMitra();
 
 
@@ -380,7 +382,7 @@
                 method: "POST",
 
                 success: function(response) {
-                    console.log(response);
+                    //console.log(response);
 
                     $('.form-baru-distribusi').append(response);
                     $('.select2').select2({
@@ -390,6 +392,10 @@
                 }
             });
         }
+
+        
+       
+
 
         function loadSelect2ReportMitra() {
             $.ajax({
@@ -846,6 +852,38 @@
             return config;
         }
 
+
+        $(document).on('click', '#btn_out', function(e) {
+
+            e.preventDefault();
+            var id = $(this).data("id");
+            $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url('mitra/showModalToMitraOut/'); ?>" + id,
+                    data: {
+                        id: id
+                    }
+
+                })
+                .done(function(data) {
+                    $('#wadah_modal_to_mitra_out').html(data);
+                    $('#modal-to-mitra-out').modal('show');
+                    $('#alasan-lainnya').hide();
+                    $('.show-tick').selectpicker();
+                });
+        });
+
+        $(document).on('change', '#select_alasan', function(){
+            var getVal = $("#select_alasan option:selected").val();
+            
+            if(getVal == "Lainnya"){
+                $('#alasan-lainnya').show(500);
+            } else {
+                $('#alasan-lainnya').hide(500);
+            }
+        });
+
+       $('mitra-select').select2();
 
     });
 </script>

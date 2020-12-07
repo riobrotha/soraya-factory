@@ -136,6 +136,15 @@ class Mitra extends MY_Controller
         redirect(base_url("mitra"));
     }
 
+    public function showModalToMitraOut($id_mitra)
+    {
+        $data['mitra'] = $this->mitra->where('id', $id_mitra)->first();
+
+        $data['id_mitra'] = $id_mitra;
+
+        echo show_my_modal('pages/mitra/modal_to_mitra_out', 'modal-to-mitra-out', $data, 'lg');
+    }
+
     public function moveToMitraOut($id_mitra)
     {
 
@@ -153,7 +162,9 @@ class Mitra extends MY_Controller
                 'alamat'          => $row->alamat,
                 'jenis_kelamin'   => $row->jenis_kelamin,
                 'tempat'          => $row->tempat,
-                'status_nikah'    => $row->status_nikah
+                'status_nikah'    => $row->status_nikah,
+                'status_out'      => $this->input->post('status_out', true),
+                'keterangan'      => $this->input->post('keterangan', true)
             ));
 
             

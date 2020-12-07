@@ -21,6 +21,7 @@
                             <?php if (checkRencana($row->id) > 0) : ?>
                                 <!-- <a href="<?= base_url("progress/edit_plan/$row->id"); ?>" class="btn btn-success waves-effect">Ubah Perencanaan</a> -->
                                 <a href="<?= base_url("progress/loadCetak/$row->id"); ?>" target="_blank" class="btn btn-danger waves-effect">Cetak</a>
+                                <a href="<?= base_url("progress/edit_plan/$row->id"); ?>" class="btn btn-warning waves-effect">Edit Perencanaan</a>
                             <?php endif ?>
                         </div>
                     </td>

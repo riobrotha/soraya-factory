@@ -21,6 +21,7 @@
                                 <a href="<?= base_url("progress/add_realisasi/$row->id"); ?>" class="btn bg-deep-purple waves-effect">Tambah Realisasi</a>
                                 <?php if (checkRealisasi($row->id) > 0) : ?>
                                     <a href="<?= base_url("progress/preview/$row->id"); ?>" class="btn bg-deep-orange waves-effect">View</a>
+                                    <a href="<?= base_url("progress/edit_realisasi/$row->id"); ?>" class="btn bg-blue-grey waves-effect">Edit Realisasi</a>
                                 <?php endif ?>
                             </div>
                         </td>
