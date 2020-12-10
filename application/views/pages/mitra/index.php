@@ -15,6 +15,7 @@
                             <?= $title_detail; ?>
                         </h2>
                         <a href="<?= base_url("mitra/add"); ?>" class="btn btn-primary waves-effect" style="margin-top: 15px;" id="btnAddMitra"><i class="material-icons">person_add</i>&nbsp;Tambah Mitra</a>
+                        <a href="<?= base_url("mitra/exportToExcel"); ?>" class="btn bg-green waves-effect" style="margin-top: 15px; margin-left: 10px;" id="btnAddMitra"><i class="material-icons">description</i>&nbsp;Export to Excel</a>
 
                         <ul class="header-dropdown m-r--5">
 

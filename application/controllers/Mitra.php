@@ -86,38 +86,34 @@ class Mitra extends MY_Controller
     {
         $data['content'] = $this->mitra->where('id', $id)->first();
 
-        if(!$data['content']) {
+        if (!$data['content']) {
             $this->session->set_flashdata('warning', 'Data Tidak ditemukan!');
-            
         }
 
-        if (!$_POST)
-        {
+        if (!$_POST) {
             $data['input']  = $data['content'];
         } else {
             $data['input']  = (object) $this->input->post(null, true);
         }
 
 
-        if(!$this->mitra->validate()) {
+        if (!$this->mitra->validate()) {
             $data['title']          = 'Edit Mitra';
             $data['sub_title']      = 'This is form add mitra to fill another mitra by admin.';
             $data['nav_title']      = 'mitra';
-         
+
             $data['form_action']    = base_url("mitra/edit/$id");
             $data['page']           = 'pages/mitra/form';
 
-           
+
             $this->view($data);
             return;
         }
 
-        if($this->mitra->where('id', $id)->update($data['input'])) {
+        if ($this->mitra->where('id', $id)->update($data['input'])) {
             $this->session->set_flashdata('success', 'Data has been updated!');
-            
         } else {
             $this->session->set_flashdata('error', 'Oops! Something went wrong!');
-            
         }
 
         redirect(base_url("mitra"));
@@ -125,12 +121,10 @@ class Mitra extends MY_Controller
 
     public function delete($id)
     {
-        if($this->mitra->where('id', $id)->delete()){
+        if ($this->mitra->where('id', $id)->delete()) {
             $this->session->set_flashdata('success', 'Data has been deleted!');
-            
         } else {
             $this->session->set_flashdata('error', 'Oops! Something went wrong!');
-            
         }
 
         redirect(base_url("mitra"));
@@ -166,8 +160,6 @@ class Mitra extends MY_Controller
                 'status_out'      => $this->input->post('status_out', true),
                 'keterangan'      => $this->input->post('keterangan', true)
             ));
-
-            
         }
 
         if (count($data) > 0) {
@@ -205,8 +197,6 @@ class Mitra extends MY_Controller
                 'tempat'          => $row->tempat,
                 'status_nikah'    => $row->status_nikah
             ));
-
-            
         }
 
         if (count($data) > 0) {
@@ -222,6 +212,153 @@ class Mitra extends MY_Controller
             }
         } else {
             $this->session->set_flashdata('warning', 'Tidak ada data');
+            redirect(base_url("mitra"));
+        }
+    }
+
+    public function exportToExcel()
+    {
+        $mitra = $this->mitra->get();
+        if ($mitra) {
+            include_once APPPATH . '/third_party/xlsxwriter.class.php';
+            ini_set('display_errors', 0);
+            ini_set('log_errors', 1);
+            error_reporting(E_ALL & ~E_NOTICE);
+
+            $filename = "data-mitra-" . date('d-m-Y-His') . ".xlsx";
+            header('Content-disposition: attachment; filename="' . XLSXWriter::sanitize_filename($filename) . '"');
+            header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            header('Content-Transfer-Encoding: binary');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+
+            $styles = array(
+                'widths' => [7, 30, 25, 12, 17, 17, 19, 30, 17, 14, 17],
+                'heights' => [21],
+                'font' => 'Arial', 'font-size' => 12,
+                'font-style' => 'bold',
+                'fill' => '#eee',
+                'halign' => 'center',
+                'border' => 'left,right,top,bottom',
+                'border-style'  => 'thin'
+            );
+
+            $styles2 = array(
+                [
+                    'font' => 'Arial', 'font-size' => 11,
+                    'halign' => 'left',
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+                [
+                    'font-size' => 11,
+                    'border' => 'left,right,top,bottom',
+                    'border-style'  => 'thin'
+                ],
+            );
+
+            $header = array(
+                'No'                => 'integer',
+                'No Mitra'          => 'string',
+                'Nama'              => 'string',
+                'Tgl Lahir'         => 'dd/mm/yyyy',
+                'Tgl Mulai Kerja'   => 'dd/mm/yyyy',
+                'Durasi Kerja'      => 'string',
+                'No HP'             => 'string',
+                'Alamat'            => 'string',
+                'Jenis Kelamin'     => 'string',
+                'Tempat'            => 'string',
+                'Status'            => 'string',
+
+            );
+
+            $writer = new XLSXWriter();
+            $writer->setAuthor('admin');
+
+            $writer->writeSheetHeader('Sheet1', $header, $styles);
+            $no = 1;
+
+            foreach ($mitra as $row) {
+                $waktuAwal = new DateTime($row->tgl_mulai_kerja . " 00:00:00");
+                $waktuSekarang = new DateTime();
+                $diff = date_diff($waktuAwal, $waktuSekarang);
+
+                if ($diff->m == 0) {
+                    $durasi = 'Kurang dari sebulan';
+                } else {
+                    $durasi = $diff->m . ' bulan';
+                }
+
+                
+                $writer->writeSheetRow(
+                    'Sheet1',
+                    [
+                        $no,
+                        $row->id,
+                        $row->nama,
+                        $row->tgl_lahir,
+                        $row->tgl_mulai_kerja,
+                        $durasi,
+                        $row->nohp,
+                        $row->alamat,
+                        ucwords($row->jenis_kelamin),
+                        ucwords($row->tempat),
+                        $row->status_nikah == "belum_nikah" ? "Belum Nikah" : ucwords($row->status_nikah)
+
+                    ],
+                    $styles2
+                );
+
+                $no++;
+            }
+            $writer->writeToStdOut();
+        } else {
+            $this->session->set_flashdata('warning', 'Tidak Ada Data!');
             redirect(base_url("mitra"));
         }
     }

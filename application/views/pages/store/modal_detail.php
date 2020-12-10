@@ -5,6 +5,9 @@
 
         </div>
         <div class="col-xs-6">
+            <?php if (checkStore($progress->id) > 0) : ?>
+                <a href="<?= base_url("store/edit_store_pekerjaan/$progress->id"); ?>" class="btn btn-warning waves-effect" style="float: right; margin-top:20px; margin-left: 10px;"><i class="material-icons">input</i>&nbsp;&nbsp;<span style="margin-bottom: 30px;">Edit Store Pekerjaan</span></a>
+            <?php endif ?>
             <a href="<?= base_url("store/store_pekerjaan/$progress->id"); ?>" class="btn btn-info waves-effect" style="float: right; margin-top:20px;"><i class="material-icons">input</i>&nbsp;&nbsp;<span style="margin-bottom: 30px;">Store Pekerjaan</span></a>
         </div>
     </div>

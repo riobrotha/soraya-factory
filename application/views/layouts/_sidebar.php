@@ -28,10 +28,10 @@
         <div class="menu">
             <ul class="list">
                 <li class="header">MAIN NAVIGATION</li>
-                <li class="<?= $nav_title == "home" ? "active" : "" ?>"> 
+                <li class="<?= $nav_title == "home" ? "active" : "" ?>">
                     <a href="<?= base_url("home"); ?>">
-                        <i class="material-icons">home</i>
-                        <span>Home</span>
+                        <i class="material-icons">dashboard</i>
+                        <span>Dashboard</span>
                     </a>
                 </li>
 
@@ -60,7 +60,7 @@
                 <li class="<?= $nav_title == "progress" || $nav_title == "realisasi" ? "active" : "" ?>">
                     <a href="javascript:void(0);" class="menu-toggle waves-effect waves-block">
                         <i class="material-icons">content_cut</i>
-                        <span>Gunting</span>
+                        <span>Progress & Gunting</span>
                     </a>
                     <ul class="ml-menu" style="<?= $nav_title == "progress" ? "display: block;" : "display: none;" ?>">
                         <li class="">
@@ -91,6 +91,29 @@
                         <span>Penyerahan Pekerjaan</span>
                     </a>
                 </li>
+
+
+                <li class="header">DATA NAVIGATION</li>
+                <li class="<?= $nav_title == "jenis_pekerjaan" ? "active" : "" ?>">
+                    <a href="<?= base_url('work'); ?>">
+                        <i class="material-icons">assignment</i>
+                        <span>Jenis Pekerjaan Realisasi</span>
+                    </a>
+                </li>
+                <li class="<?= $nav_title == "jenis_bantal" ? "active" : "" ?>">
+                    <a href="<?= base_url('bantal'); ?>">
+                        <i class="material-icons">airline_seat_individual_suite</i>
+                        <span>Jenis Bantal</span>
+                    </a>
+                </li>
+
+                <li class="<?= $nav_title == "mitrawork" ? "active" : "" ?>">
+                    <a href="<?= base_url('mitrawork'); ?>">
+                        <i class="material-icons">directions_walk</i>
+                        <span>Pekerjaan Mitra</span>
+                    </a>
+                </li>
+
 
                 <li class="header">REPORT</li>
 

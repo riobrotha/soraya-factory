@@ -9,7 +9,7 @@
     <?php $this->load->view('layouts/_style'); ?>
 </head>
 
-<body class="theme-red">
+<body class="theme-deep-orange">
 
 
     <?php $this->load->view('layouts/_component'); ?>

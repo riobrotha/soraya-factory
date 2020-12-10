@@ -58,6 +58,14 @@ function checkDistribusi($id_progress)
   return $result;
 }
 
+function checkStore($id_progress)
+{
+  $CI     = &get_instance();
+  $query = $CI->db->query("SELECT * FROM store, distribusi WHERE distribusi.id = store.id_distribusi AND id_progress = '$id_progress'");
+  $result = $query->num_rows();
+  return $result;
+}
+
 function checkStatusSelesaiDistribusi($id_progress)
 {
   $CI     = &get_instance();

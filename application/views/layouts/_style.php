@@ -1,5 +1,5 @@
  <!-- Favicon-->
- <link rel="icon" href="<?= base_url('assets'); ?>/favicon.ico" type="image/x-icon">
+ <link rel="icon" href="<?= base_url('assets/'); ?>img/favicon.png">
 
  <!-- Google Fonts -->
  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
